@@ -1,0 +1,70 @@
+# openWakeWord training config for "Hey Emma"
+# Usage: python -m openwakeword.train --training_config hey_emma.yml \
+#          --generate_clips --augment_clips --train_model --convert_to_tflite
+
+model_name: "hey_emma"
+
+target_phrase:
+  - "hey emma"
+
+# Phonetically similar phrases to suppress false positives
+custom_negative_phrases:
+  - "hey anna"
+  - "hey ella"
+  - "hey eva"
+  - "hey ever"
+  - "hey oma"
+  - "hey irma"
+  - "hey enma"
+  - "hey mama"
+  - "hey lemma"
+  - "hey thema"
+
+# --- Synthetic data generation ---
+n_samples: 50000
+n_samples_val: 5000
+tts_batch_size: 100
+
+# Path to cloned https://github.com/dscripka/piper-sample-generator
+piper_sample_generator_path: "./piper-sample-generator"
+
+# --- Output ---
+output_dir: "./hey_emma_model"
+
+# --- Augmentation ---
+augmentation_batch_size: 16
+augmentation_rounds: 2
+
+# Room impulse responses (download MIT RIRs or use own)
+rir_paths:
+  - "./mit_rirs"
+
+# Background noise audio clips
+background_paths:
+  - "./background_clips"
+
+background_paths_duplication_rate:
+  - 1
+
+# --- Training data ---
+# Pre-computed negative features (~2000 hrs ACAV100M, download from HuggingFace)
+# https://huggingface.co/datasets/dscripka/openwakeword_features
+feature_data_files:
+  "ACAV100M_sample": "./openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
+
+# Validation set for false-positive rate estimation
+false_positive_validation_data_path: "./validation_set_features.npy"
+
+batch_n_per_class:
+  "ACAV100M_sample": 1024
+  "adversarial_negative": 50
+  "positive": 50
+
+# --- Model architecture ---
+model_type: "dnn"
+layer_size: 32
+
+# --- Training parameters ---
+steps: 50000
+max_negative_weight: 1500
+target_false_positives_per_hour: 0.2

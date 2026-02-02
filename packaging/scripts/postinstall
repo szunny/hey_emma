@@ -1,0 +1,31 @@
+#!/bin/bash
+# Post-install script: create user config directory and .env template
+
+USER_HOME=$(eval echo ~"$USER")
+CONFIG_DIR="$USER_HOME/Library/Application Support/HeyEmma"
+
+mkdir -p "$CONFIG_DIR"
+
+# Only create .env if it doesn't already exist (preserve user config)
+if [ ! -f "$CONFIG_DIR/.env" ]; then
+    cat > "$CONFIG_DIR/.env" << 'ENVEOF'
+# Hey Emma Configuration
+# ──────────────────────
+
+# Porcupine Wake Word Detection (required)
+# Get your access key at: https://console.picovoice.ai/
+PORCUPINE_ACCESS_KEY=''
+
+# Porcupine model settings (defaults work for bundled files)
+# PORCUPINE_MODEL_PATH=porcupine_params_de.pv
+# PORCUPINE_KEYWORD_PATHS=Hey-Emma_de_mac_v3_0_0.ppn
+# PORCUPINE_KEYWORDS=Hey-Emma
+# PORCUPINE_SENSITIVITIES=0.5
+
+# Embedding model (default: paraphrase-multilingual-MiniLM-L12-v2)
+# EMBED_MODEL=paraphrase-multilingual-MiniLM-L12-v2
+ENVEOF
+    echo "Created config template: $CONFIG_DIR/.env"
+fi
+
+exit 0

@@ -1,0 +1,156 @@
+commands:
+  - id: is_online
+    triggers:
+      - "Bist du mit dem Internet verbunden?"
+      - "Hast du Internet?"
+      - "Bist du online?"
+    action: check_internet
+    responses:
+      success: "Ja, ich bin mit dem Internet verbunden."
+      failure: "Nein, ich habe gerade keine Internetverbindung."
+
+  - id: status
+    triggers:
+      - "Wie ist dein Status?"
+      - "Wie geht es dir?"
+    action: check_status
+    responses:
+      success: >
+        Alle Systeme funktionieren.
+        Ich bin mit dem Internet verbunden.
+        Es ist genug Speicherplatz und Arbeitsspeicher vorhanden.
+        Kann losgehen!
+      failure: "Es gibt ein Problem mit meinen Systemen."
+
+  - id: docker_status
+    triggers:
+      - "Läuft Docker?"
+      - "Was machen die Container?"
+    action: check_docker
+    responses:
+      success: "Ja, Docker läuft."
+      failure: "Nein, Docker läuft nicht."
+
+  - id: has_problems
+    triggers:
+      - "Gibt es Probleme?"
+      - "Hast du Probleme?"
+    action: check_status
+    responses:
+      success: "Nein, alle Systeme funktionieren. Wir können loslegen."
+      failure: "Ja, es gibt ein Problem mit meinen Systemen."
+
+  - id: light_on
+    triggers:
+      - "Licht einschalten"
+      - "Mach das Licht an"
+    action: none
+    responses:
+      default: "Licht eingeschaltet."
+
+  - id: light_off
+    triggers:
+      - "Licht ausschalten"
+      - "Mach das Licht aus"
+    action: none
+    responses:
+      default: "Licht ausgeschaltet."
+
+  - id: play_jazz
+    triggers:
+      - "Spiele Jazzmusik"
+      - "Spiel Jazz"
+    action: none
+    responses:
+      default: "Jazz wird gespielt."
+
+  - id: weather_today
+    triggers:
+      - "Wie ist das Wetter heute?"
+      - "Wetter heute?"
+    action: none
+    responses:
+      default: "Wetter heute."
+
+  - id: tell_joke
+    triggers:
+      - "Erzähle mir einen Witz"
+      - "Sag mir einen Witz"
+    action: none
+    responses:
+      default: "Nock Nock"
+
+  - id: set_timer_10m
+    triggers:
+      - "Stelle einen Timer auf zehn Minuten"
+      - "Timer zehn Minuten"
+    action: none
+    responses:
+      default: "Timer auf zehn Minuten gestellt."
+
+  - id: volume_up
+    triggers:
+      - "Erhöhe die Lautstärke"
+      - "Lauter bitte"
+    action: none
+    responses:
+      default: "Lautstärke erhöht."
+
+  - id: volume_down
+    triggers:
+      - "Verringere die Lautstärke"
+      - "Leiser bitte"
+    action: none
+    responses:
+      default: "Lautstärke verringert."
+
+  - id: tv_on
+    triggers:
+      - "Schalte den Fernseher ein"
+      - "Fernseher einschalten"
+    action: none
+    responses:
+      default: "Fernseher eingeschaltet."
+
+  - id: count_pending
+    triggers:
+      - "Wieviele Behandlungen müssen noch bearbeitet werden?"
+      - "Offene Behandlungen?"
+    action: none
+    responses:
+      default: "Es gibt 15 offene Behandlungen."
+
+  - id: count_today
+    triggers:
+      - "Wieviele Behandlungen gab es heute?"
+      - "Behandlungen heute?"
+    action: none
+    responses:
+      default: "Heute gab es 9 Behandlungen."
+
+  - id: service_checks
+    triggers:
+      - "Wieviel Leistungskontrollen sind zu machen?"
+      - "Leistungskontrollen?"
+    action: none
+    responses:
+      default: >
+        Vom heutigen Behandlungstag sind 12 Dokumentationen zu prüfen.
+        Von den letzten Behandlungstagen sind noch 7 Dokumentationen offen.
+        Wollen wir starten?
+
+  - id: no_documentations
+    triggers:
+      - "Ich sehe keine Dokumentationen"
+      - "Keine Dokumentationen"
+    action: none
+    responses:
+      default: >
+        Ich überprüfe meine Systeme:
+        Es ist genug Speicherplatz und Arbeitsspeicher vorhanden.
+        Ich bin mit dem Internet verbunden und sehe den Server.
+        Aber ich sehe keine Verbindung zum Praxisverwaltungsprogramm.
+        Bitte prüfe, ob das Praxisverwaltungsprogramm läuft und ob die Verbindung
+        zwischen mir und Deinem Rechner besteht.
+        Wenn ja, dann rufe bitte meine Kollegen vom dentiskreib Service an,
+        damit man Dir weiterhelfen kann.

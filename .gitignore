@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+.venv/
+venv/
+.DS_Store
+*.log
+chroma_db/
+.env
+
+# Build artifacts
+build/
+dist/
+
+# Exported ONNX models (large, re-exportable)
+resources/models/

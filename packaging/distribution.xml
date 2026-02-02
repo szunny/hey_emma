@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="2">
+    <title>Hey Emma</title>
+    <welcome file="welcome.html" mime-type="text/html" />
+    <options customize="never" require-scripts="false" hostArchitectures="arm64" />
+    <domains enable_localSystem="true" />
+
+    <choices-outline>
+        <line choice="default">
+            <line choice="com.dentiscribe.hey-emma" />
+        </line>
+    </choices-outline>
+
+    <choice id="default" />
+
+    <choice id="com.dentiscribe.hey-emma"
+            visible="false"
+            title="Hey Emma">
+        <pkg-ref id="com.dentiscribe.hey-emma" />
+    </choice>
+
+    <pkg-ref id="com.dentiscribe.hey-emma"
+             version="0.1.0"
+             onConclusion="none">HeyEmma-component.pkg</pkg-ref>
+</installer-gui-script>
