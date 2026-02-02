@@ -48,7 +48,7 @@ background_paths_duplication_rate:
 
 # --- Training data ---
 # Pre-computed negative features (~2000 hrs ACAV100M, download from HuggingFace)
-# https://huggingface.co/datasets/dscripka/openwakeword_features
+# https://huggingface.co/datasets/davidscripka/openwakeword_features
 feature_data_files:
   "ACAV100M_sample": "./openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
 
