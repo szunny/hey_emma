@@ -37,12 +37,16 @@ def request_authorization() -> bool:
     return result[0]
 
 
-def listen(timeout: float = 5.0) -> str | None:
+def listen(timeout: float = 1.5, prompt: str | None = None) -> str | None:
     """Listen for speech using Apple SFSpeechRecognizer and return transcript.
 
     Uses AVAudioEngine for microphone input and SFSpeechRecognizer for
     offline German speech recognition. Listens for `timeout` seconds
     after the last speech result update.
+
+    If `prompt` is given, it is spoken (via TTS) after the audio engine is
+    prepared but before recording starts — this overlaps STT setup with the
+    prompt so the mic is ready the instant the prompt finishes.
 
     Returns the recognized text or None if nothing was recognized.
     """
@@ -84,9 +88,18 @@ def listen(timeout: float = 5.0) -> str | None:
     input_node.installTapOnBus_bufferSize_format_block_(0, 1024, record_format, audio_tap)
 
     audio_engine.prepare()
+
+    # Speak prompt AFTER engine is prepared but BEFORE recording starts.
+    # This overlaps STT setup time with the prompt playback.
+    if prompt:
+        from emma.tts import say
+        say(prompt)
+
     success, err = audio_engine.startAndReturnError_(None)
     if not success:
         print(f"AVAudioEngine konnte nicht gestartet werden: {err}")
+        input_node.removeTapOnBus_(0)
+        request.endAudio()
         return None
 
     print("Höre zu...")

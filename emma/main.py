@@ -1,4 +1,5 @@
 import random
+import threading
 import warnings
 from datetime import datetime
 
@@ -19,6 +20,7 @@ from emma.commands import (
 from emma.actions import run_action
 
 CONFIRMATIONS = ["Ja?", "Hmm?", "Jaa?", "Was kann ich für dich tun?", "Japp?", "Ja, bitte?"]
+ACKNOWLEDGMENTS = ["Moment...", "Einen Moment...", "Sekunde...", "Alles klar..."]
 
 
 def get_response(command: dict, action_result: dict) -> str:
@@ -66,24 +68,28 @@ def main():
             # Stop wake word recorder while doing STT
             detector.stop()
 
-            # Confirm wake word
+            # Listen with confirmation prompt (STT prepares while prompt plays)
             confirmation = random.choice(CONFIRMATIONS)
-            say(confirmation)
-
-            # Listen for command via Apple Speech Recognition
-            transcript = listen(timeout=5.0)
+            transcript = listen(timeout=1.5, prompt=confirmation)
 
             if transcript:
-                # Match against commands
                 cmd, distance = find_best_command(
                     collection, embed_model, transcript, trigger_to_command
                 )
 
                 if cmd:
-                    # Run action
-                    action_result = run_action(cmd["action"])
-                    # Get response
-                    response = get_response(cmd, action_result)
+                    # Run action in background, acknowledge only if slow (>150ms)
+                    action_result = [None]
+                    def _run():
+                        action_result[0] = run_action(cmd["action"])
+                    action_thread = threading.Thread(target=_run)
+                    action_thread.start()
+                    action_thread.join(timeout=0.15)
+                    if action_thread.is_alive():
+                        say(random.choice(ACKNOWLEDGMENTS))
+                        action_thread.join()
+
+                    response = get_response(cmd, action_result[0])
                     say(response)
                 else:
                     say("Ich konnte den Befehl nicht zuordnen.")
