@@ -39,6 +39,7 @@ datas += [
     (str(PROJECT_ROOT / "commands.yaml"), "resources"),
     (str(PROJECT_ROOT / "Hey-Emma_de_mac_v3_0_0.ppn"), "resources"),
     (str(PROJECT_ROOT / "porcupine_params_de.pv"), "resources"),
+    (str(PROJECT_ROOT / "hey_emma.onnx"), "resources"),
 ]
 
 # ONNX model (required for bundled app)
